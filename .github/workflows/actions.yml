@@ -6,6 +6,12 @@ jobs:
   run-github-actions:
     runs-on: ubuntu-latest
     steps:
+      - name: List variables required to replace checkout action
+        run: |
+          echo $GITHUB_SHA
+          echo $GITHUB_REPOSITORY
+          echo $GITHUB_WORKSPACE
+          echo "${{ github.token }}"
       - name: Checkout
         uses: actions/checkout@v1
       - name: Simple JS Action
