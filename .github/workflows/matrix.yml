@@ -1,5 +1,5 @@
 name: Matrix
-on: push
+on: pull_request
 
 jobs:
   node-version:
@@ -22,10 +22,23 @@ jobs:
       matrix:
         node_version: [6, 8, 10]
         os: [macos-latest, ubuntu-latest, windows-latest]
+        include:
+          - os: ubuntu-latest
+            node_version: 10
+            is_ubuntu_10: "true"
+        exclude:
+          - os: macos-latest
+            node_version: 8
+          - os: windows-latest
+            node_version: 6
     runs-on: ${{ matrix.os }}
+    env:
+      IS_UBUNTU_10: ${{ matrix.is_ubuntu_10 }}
     steps:
       - uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node_version }}
       - name: Log node version
-        run: node -v
+        run: |
+          node -v
+          echo $IS_UBUNTU_10
